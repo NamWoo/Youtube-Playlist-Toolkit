@@ -5,9 +5,11 @@
   python scripts/export_playlist_csv.py
 
 필요:
-  - .env 에 YT_API_KEY, PLAYLIST_ID 설정
+  - .env 에 GOOGLE_API_KEY, PLAYLIST_ID 설정
 """
-import os
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -17,10 +19,10 @@ from youtube_tools.utils import iso8601_to_hhmmss, get_env
 load_dotenv()
 
 def main():
-    api_key = get_env("YT_API_KEY")
+    api_key = get_env("GOOGLE_API_KEY")
     playlist_id = get_env("PLAYLIST_ID", "").strip()
     if not api_key or not playlist_id:
-        raise SystemExit("환경변수 설정 필요: YT_API_KEY, PLAYLIST_ID")
+        raise SystemExit("환경변수 설정 필요: GOOGLE_API_KEY, PLAYLIST_ID")
 
     print(f"[INFO] playlistId={playlist_id} 불러오는 중...")
     items = list_playlist_items(playlist_id, api_key=api_key)
@@ -57,7 +59,10 @@ def main():
     df = pd.DataFrame(rows, columns=["title","duration","link","videoId","publishedAt"])
     os.makedirs("data", exist_ok=True)
     out_csv = os.path.join("data","playlist_items.csv")
-    df.to_csv(out_csv, index=False, encoding="utf-8-sig")
+
+    import csv
+    df.to_csv(out_csv, index=False, encoding="utf-8-sig", sep="\t", quoting=csv.QUOTE_NONE, escapechar='\\')
+
     print(f"[OK] CSV 저장: {out_csv}  (총 {len(df)}개)")
 
 if __name__ == "__main__":

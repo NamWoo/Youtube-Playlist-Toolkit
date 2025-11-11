@@ -1,5 +1,23 @@
-requests
-pandas
-pytubefix
-youtube-transcript-api
-python-dotenv
+# Core API clients
+google-generativeai>=0.5.0
+pytubefix>=7.5.0
+youtube-transcript-api>=0.6.2
+yt-dlp>=2025.1.1
+
+# Data handling
+pandas>=2.0.0
+python-dotenv>=1.0.0
+
+# CSV / Excel utilities
+openpyxl>=3.1.2
+
+# File system & path helpers
+pathlib
+textwrap3
+
+# HTTP/network related
+requests>=2.31.0
+
+# Optional: Colab or Jupyter environments (if you plan to run in Colab)
+ipykernel
+tqdm
